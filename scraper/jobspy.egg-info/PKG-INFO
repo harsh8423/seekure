@@ -1,0 +1,16 @@
+Metadata-Version: 2.2
+Name: jobspy
+Version: 0.1.0
+Requires-Dist: pandas
+Requires-Dist: requests
+Requires-Dist: beautifulsoup4
+Requires-Dist: selenium
+Requires-Dist: python-dotenv
+Requires-Dist: pydantic
+Requires-Dist: tls_client
+Requires-Dist: numpy
+Requires-Dist: markdownify
+Requires-Dist: regex
+Requires-Dist: pymongo
+Requires-Dist: google-generativeai
+Dynamic: requires-dist

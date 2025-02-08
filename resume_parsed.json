@@ -1,0 +1,117 @@
+{
+    "job_titles": [
+        "Full Stack Developer",
+        "Web Developer",
+        "Freelance",
+        "Software Developer",
+        "Full-Stack Web Developer Intern",
+        "IBM Full Stack Software Developer"
+    ],
+    "contact_details": {
+        "name": "Harsh Tiwari",
+        "email": "harsh857498@gmail.com",
+        "phone": "+91 84230-47004",
+        "location": {
+            "city/state": "Mohali, Punjab",
+            "country": "India"
+        },
+        "github_link": "https://github.com/harsh8423/",
+        "linkedin_link": "https://www.linkedin.com/in/hashtagharsh/",
+        "portfolio_link": "https://hashtagharsh.vercel.app/"
+    },
+    "education": [
+        {
+            "institute": "Chandigarh University",
+            "degree": "BE in Computer Science and Engineering",
+            "graduation_year": 2026,
+            "grade": null
+        },
+        {
+            "institute": "Saint John\u2019s Academy",
+            "degree": "High School Diploma [PCM]",
+            "graduation_year": null,
+            "grade": "A"
+        }
+    ],
+    "work_experience": [
+        {
+            "company": "Vell.ai",
+            "title": "Full-Stack Web Developer Intern",
+            "duration_in_months": 13,
+            "responsibilities": [
+                "Successfully implemented the Notion API to retrieve and render dynamic content from Notion pages into a React web page.",
+                "Ensured compatibility with nested pages in Notion."
+            ]
+        },
+        {
+            "company": "AIverse",
+            "title": "Freelance",
+            "duration_in_months": 3,
+            "responsibilities": [
+                "Web Application Development: Spearheaded creation of a web app from scratch, focusing on speed and functionality.",
+                "Optimized Performance: Utilized CDN for faster content delivery.",
+                "AWS Deployment: Deployed application on AWS cloud, ensuring scalability and reliability."
+            ]
+        }
+    ],
+    "skills": [
+        "Javascript",
+        "C++ programming",
+        "Python programming",
+        "React.js",
+        "Node.js",
+        "React Native",
+        "MongoDB",
+        "SQL",
+        "MERN",
+        "Express.js",
+        "TradingView API",
+        "Paytm Money WebSocket API",
+        "Angel One API",
+        "Leadership skill",
+        "Creative Thinking",
+        "Problem Solving",
+        "Team Collaboration"
+    ],
+    "projects": [
+        {
+            "name": "AICTE Automated Portal",
+            "description": "Developed an automated portal to streamline the approval process for new institutions under AICTE.",
+            "technologies": [
+                "Node.js",
+                "Python",
+                "React.js",
+                "MongoDB",
+                "React Native"
+            ],
+            "links": [
+                null
+            ]
+        },
+        {
+            "name": "Hackathon Hosting Platform",
+            "description": "Built a comprehensive platform to host online hackathons, successfully hosted the Hack2Hire hackathon, serving over 200 users.",
+            "technologies": [
+                "MERN",
+                "GitHub API",
+                "MobiScroll library"
+            ],
+            "links": [
+                null
+            ]
+        },
+        {
+            "name": "Stock Market Trading Platform",
+            "description": "Developed an online platform for stock market enthusiasts to simulate trading with features like virtual portfolios, trade execution, and live market data streaming.",
+            "technologies": [
+                "MERN",
+                "Paytm Money WebSocket API",
+                "Angel One API",
+                "TradingView API"
+            ],
+            "links": [
+                null
+            ]
+        }
+    ]
+}

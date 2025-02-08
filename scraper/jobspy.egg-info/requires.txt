@@ -1,0 +1,12 @@
+pandas
+requests
+beautifulsoup4
+selenium
+python-dotenv
+pydantic
+tls_client
+numpy
+markdownify
+regex
+pymongo
+google-generativeai

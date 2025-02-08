@@ -1,0 +1,129 @@
+{
+    "job_titles": [
+        "Full Stack Engineer",
+        "Machine Learning Intern",
+        "Data Analytics and Machine Learning Intern"
+    ],
+    "contact_details": {
+        "name": "MOHD AFTAAB",
+        "email": "emoaftaab786@gmail.com",
+        "phone": "+91 8175099430",
+        "location": {
+            "city/state": "Mohali, Punjab",
+            "country": null
+        },
+        "github_link": null,
+        "linkedin_link": "https://www.linkedin.com/in/mohammad-aftaab-b49a5624a/",
+        "portfolio_link": null
+    },
+    "education": [
+        {
+            "institute": "Chandigarh University",
+            "degree": "Bachelor of Engineering (BE) in Computer Science and Engineering",
+            "graduation_year": 2026,
+            "grade": 8.56
+        }
+    ],
+    "work_experience": [
+        {
+            "company": "University of New South Wales (UNSW)",
+            "title": "Machine Learning Intern",
+            "duration_in_months": null,
+            "responsibilities": [
+                "Developed a GIS framework leveraging ArcGIS and QGIS, improving spatial analysis and settlement pattern identification by 30%",
+                "Analyzed high-resolution satellite imagery from Landsat, IKONOS, and WorldView for comprehensive spatial analysis",
+                "Conducted multispectral image analysis, identifying 20+ archaeological sites and reducing manual analysis time by 50%"
+            ]
+        },
+        {
+            "company": "Indian Institute of Information Technology Bhopal",
+            "title": "Data Analytics and Machine Learning Intern",
+            "duration_in_months": null,
+            "responsibilities": [
+                "Developed an XGBoost-based predictive model for heart health scores using wearable technology data, achieving 99.37% accuracy (R\u00b2 of 0.9937)",
+                "Achieved a low Mean Squared Error (MSE) of 5.2250e-05, showcasing high precision in predictions",
+                "Enhanced model reliability by engineering strategic features and performing comprehensive data cleaning"
+            ]
+        },
+        {
+            "company": "Vell.ai",
+            "title": "Full Stack Engineer",
+            "duration_in_months": null,
+            "responsibilities": [
+                "Worked on API integration, connecting backend and frontend for seamless data flow",
+                "Integrated Machine learning applications with backend to improve functionality",
+                "Managed and optimized data in MongoDB and worked with both relational and NoSQL databases"
+            ]
+        }
+    ],
+    "skills": [
+        "HTML",
+        "C++",
+        "Java",
+        "SQL",
+        "Python",
+        "Javascript",
+        "ReactJS",
+        "Tailwind",
+        "NodeJs",
+        "NumPy",
+        "Pandas",
+        "Tensorflow",
+        "Matplotlib",
+        "Seaborn",
+        "Hbase",
+        "Hadoop",
+        "Power BI",
+        "Tableau",
+        "Github",
+        "Docker",
+        "Mongodb",
+        "Visual Studio"
+    ],
+    "projects": [
+        {
+            "name": "AI-Driven Approval System for AICTE Applications",
+            "description": "Transforming Institutional Approvals with AI",
+            "technologies": [
+                "ReactJS",
+                "Tailwind CSS",
+                "REST APIs",
+                "MongoDB",
+                "Docker",
+                "Node.js",
+                "Python",
+                "FastAPI",
+                "AWS S3",
+                "TensorFlow"
+            ],
+            "links": [
+                "LINK"
+            ]
+        },
+        {
+            "name": "View-Only PDF Downloader for Google Drive",
+            "description": "Download view-only PDFs by extracting and converting images into high-quality PDFs",
+            "technologies": [
+                "JavaScript",
+                "jsPDF",
+                "Canvas API"
+            ],
+            "links": [
+                "LINK"
+            ]
+        },
+        {
+            "name": "SkillMingle - Freelancers Marketplace",
+            "description": "Built a dynamic freelancing platform with React.js for a responsive and user-friendly frontend",
+            "technologies": [
+                "React.js",
+                "Node.js",
+                "MongoDB",
+                "Socket.io"
+            ],
+            "links": [
+                "LINK"
+            ]
+        }
+    ]
+}

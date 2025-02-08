@@ -1,0 +1,8 @@
+
+flask-cors
+flask-jwt-extended
+pymongo
+PyPDF2
+groq
+python-dotenv
+werkzeug
