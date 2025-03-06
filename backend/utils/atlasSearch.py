@@ -1,10 +1,6 @@
 from pymongo import MongoClient
-import numpy as np
 import datetime
 import os
-import json
-import csv
-import pandas as pd
 from datetime import datetime
 from bson import ObjectId
 from datetime import timedelta
