@@ -17,7 +17,7 @@ export default function ATSAnalysisModal({ isOpen, onClose, jobId, customJob, is
       
       const body = isCustomJob ? { job: customJob } : { jobId };
       
-      const response = await fetch(`http://localhost:5000${endpoint}`, {
+      const response = await fetch(`https://seekure.onrender.com${endpoint}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

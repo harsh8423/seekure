@@ -281,7 +281,7 @@ export default function Resume() {
     formData.append('file', selectedFile);
 
     try {
-      const response = await fetch('http://localhost:5000/api/upload_resume', {
+      const response = await fetch('https://seekure.onrender.com/api/upload_resume', {
         method: 'POST',
         body: formData,
       });
@@ -323,7 +323,7 @@ export default function Resume() {
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/auth/update-profile', {
+      const response = await fetch('https://seekure.onrender.com/api/auth/update-profile', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

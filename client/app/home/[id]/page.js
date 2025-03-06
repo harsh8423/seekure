@@ -77,7 +77,7 @@ export default function HomePage() {
     try {
       setLoading(true);
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/jobs/ai-search', {
+      const response = await fetch('https://seekure.onrender.com/api/jobs/ai-search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ export default function HomePage() {
       }
 
       try {
-        const res = await fetch('http://localhost:5000/api/auth/user', {
+        const res = await fetch('https://seekure.onrender.com/api/auth/user', {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -175,7 +175,7 @@ export default function HomePage() {
         datePosted: activeFilters.datePosted
       };
 
-      const response = await fetch('http://localhost:5000/api/jobs/search', {
+      const response = await fetch('https://seekure.onrender.com/api/jobs/search', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -255,7 +255,7 @@ export default function HomePage() {
       setLoading(true);
       const token = localStorage.getItem('token');
       
-      const response = await fetch('http://localhost:5000/api/auth/preferences', {
+      const response = await fetch('https://seekure.onrender.com/api/auth/preferences', {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

@@ -52,7 +52,7 @@ const PreferencesModal = ({
     
     try {
       const token = localStorage.getItem('token');
-      const response = await fetch('http://localhost:5000/api/auth/search-telegram-channel', {
+      const response = await fetch('https://seekure.onrender.com/api/auth/search-telegram-channel', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
