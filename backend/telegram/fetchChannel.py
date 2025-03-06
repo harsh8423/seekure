@@ -11,7 +11,7 @@ api_id = os.getenv("TELEGRAM_API_ID")
 api_hash = os.getenv("TELEGRAM_API_HASH")
 
 # MongoDB setup
-client = MongoClient(os.getenv("MONGO_URI"))
+client = MongoClient("mongodb+srv://harsh8423:8423047004@cluster0.1xbklyu.mongodb.net/seekure")
 db = client["seekure"]
 
 async def fetch_channel_metadata(channel_username):

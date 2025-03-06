@@ -9,7 +9,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # MongoDB connection setup
-client = MongoClient(os.getenv("MONGO_URI"))
+client = MongoClient("mongodb+srv://harsh8423:8423047004@cluster0.1xbklyu.mongodb.net/seekure")
 db = client["seekure"]
 jobs_collection = db["jobs"]
 users_collection = db["users"]

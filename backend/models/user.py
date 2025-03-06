@@ -7,7 +7,7 @@ import os
 load_dotenv()
 
 
-client = MongoClient(os.getenv("MONGO_URI"))
+client = MongoClient("mongodb+srv://harsh8423:8423047004@cluster0.1xbklyu.mongodb.net/seekure")
 db = client["seekure"]
 users = db["users"]
 
