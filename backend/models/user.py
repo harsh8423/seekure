@@ -1,8 +1,13 @@
 from pymongo import MongoClient
 from bson import ObjectId
 from config import Config
+from dotenv import load_dotenv
+import os
 
-client = MongoClient('mongodb+srv://harsh8423:8423047004@cluster0.1xbklyu.mongodb.net/seekure')
+load_dotenv()
+
+
+client = MongoClient(os.getenv("MONGO_URI"))
 db = client["seekure"]
 users = db["users"]
 

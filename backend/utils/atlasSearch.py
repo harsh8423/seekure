@@ -8,9 +8,12 @@ import pandas as pd
 from datetime import datetime
 from bson import ObjectId
 from datetime import timedelta
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # MongoDB connection setup
-client = MongoClient("mongodb+srv://harsh8423:8423047004@cluster0.1xbklyu.mongodb.net/seekure")
+client = MongoClient(os.getenv("MONGO_URI"))
 db = client["seekure"]
 jobs_collection = db["jobs"]
 users_collection = db["users"]
@@ -219,6 +222,14 @@ def search_similar_jobs(user_id, filters=None, top_k=10):
                                         }
                                     }
                                 ],
+                                "mustNot": [
+                                    {
+                                        "text": {
+                                            "query": ["free", "guidance", "course", "webinar", "seminar", "workshop", "event", "training", "certification"],
+                                            "path": "message"
+                                        }
+                                    }
+                                ],
                                 "should": [
                                     {
                                         "text": {
@@ -238,7 +249,7 @@ def search_similar_jobs(user_id, filters=None, top_k=10):
                         }
                     },
                     {
-                        "$limit": top_k
+                        "$limit": 5
                     },
                     {
                         "$project": {

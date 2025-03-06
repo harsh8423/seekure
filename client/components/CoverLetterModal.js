@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { X } from 'lucide-react';
+import ReactMarkdown from 'react-markdown';
 
 const FORMATS = [
   {
@@ -31,7 +32,7 @@ export default function CoverLetterModal({ isOpen, onClose, jobId, customJob, is
       setError(null);
       
       const token = localStorage.getItem('token');
-      const endpoint = isCustomJob ? '/api/jobs/generate-cover-letter-custom' : '/api/jobs/generate-cover-letter';
+      const endpoint = isCustomJob ? '/api/jobs/generate-cover-letter-custom' : '/api/jobs/cover-letter';
       
       const body = isCustomJob 
         ? { job: customJob, format } 
@@ -111,23 +112,22 @@ export default function CoverLetterModal({ isOpen, onClose, jobId, customJob, is
         {/* Cover Letter Display */}
         {coverLetter && (
           <div className="mt-6">
-            <div 
-              className="prose max-w-none p-6 border rounded-lg"
-              dangerouslySetInnerHTML={{ __html: coverLetter }}
-            />
+            <div className="prose max-w-none p-6 border rounded-lg">
+              <ReactMarkdown>{coverLetter}</ReactMarkdown>
+            </div>
             <div className="mt-4 flex justify-end gap-4">
               <button
                 onClick={() => {
-                  const blob = new Blob([coverLetter], { type: 'text/html' });
+                  const blob = new Blob([coverLetter], { type: 'text/markdown' });
                   const url = URL.createObjectURL(blob);
                   const a = document.createElement('a');
                   a.href = url;
-                  a.download = 'cover-letter.html';
+                  a.download = 'cover-letter.md';
                   a.click();
                 }}
                 className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
               >
-                Download HTML
+                Download Markdown
               </button>
               <button
                 onClick={() => {

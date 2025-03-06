@@ -5,23 +5,23 @@ from bson import ObjectId
 import json
 from datetime import datetime, timedelta
 from groq import Groq
-from dotenv import load_dotenv
 import os
 from models.user import User
 from google import generativeai as genai
 from google.genai import types
+from dotenv import load_dotenv
+load_dotenv()
 
 # Initialize Gemini properly
-genai.configure(api_key=os.getenv("GEMINI_API_KEY", "AIzaSyCfmHOUBbhWalFlhThJuU2WA9j4Kn9tW48"))
+genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 # client = genai.Client(api_key="AIzaSyCfmHOUBbhWalFlhThJuU2WA9j4Kn9tW48")
 # MongoDB connection setup (use the same connection from User model)
 from models.user import client, db
-jobs_collection = db["jobs_with_embeddings"]  # Define jobs_collection
+jobs_collection = db["jobs"]  # Define jobs_collection
 
 jobs_bp = Blueprint('jobs', __name__)
 
-load_dotenv()
 
 COVER_LETTER_FORMATS = {
     "standard": """
@@ -29,6 +29,7 @@ COVER_LETTER_FORMATS = {
     - Opening paragraph: Introduction and position you're applying for
     - Body paragraphs: Experience and skills relevant to the job
     - Closing paragraph: Thank you and call to action
+    - Use bullet points and other formatting options to make it more engaging.
     """,
     
     "modern": """
@@ -45,6 +46,7 @@ COVER_LETTER_FORMATS = {
     - Weaves skills and experiences into a narrative
     - Shows personality while maintaining professionalism
     - Concludes with an inspiring vision of contribution
+    - Use emojis to make it more engaging iff and only if it the format instruction is story based.
     """
 }
 
@@ -224,9 +226,11 @@ def generate_cover_letter(user_data, job_data, format_type="standard"):
     FORMAT INSTRUCTIONS:
     {COVER_LETTER_FORMATS[format_type]}
 
-    Please format the response in HTML with appropriate tags for styling.
+    generate shorter but relevant cover letter
+    Please format the response in markdown with appropriate tags for styling.
     Include line breaks and paragraphs for readability.
     Make it professional, engaging, and specifically tailored to the job description.
+    Return the response in markdown format ONLY.
     """
 
     try:
@@ -252,7 +256,7 @@ def generate_cover_letter(user_data, job_data, format_type="standard"):
         print(f"Error generating cover letter: {e}")
         return None
 
-@jobs_bp.route('/generate-cover-letter', methods=['POST'])
+@jobs_bp.route('/cover-letter', methods=['POST'])
 @jwt_required()
 def create_cover_letter():
     try:

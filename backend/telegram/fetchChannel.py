@@ -1,13 +1,17 @@
 from telethon import TelegramClient
 from pymongo import MongoClient
 import asyncio
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # Replace 'your_api_id' and 'your_api_hash' with your actual API ID and hash
-api_id = '21837749'
-api_hash = 'c0a5dd3e08e7ee5b2c10f969930cb602'
+api_id = os.getenv("TELEGRAM_API_ID")
+api_hash = os.getenv("TELEGRAM_API_HASH")
 
 # MongoDB setup
-client = MongoClient("mongodb+srv://harsh8423:8423047004@cluster0.1xbklyu.mongodb.net/seekure")
+client = MongoClient(os.getenv("MONGO_URI"))
 db = client["seekure"]
 
 async def fetch_channel_metadata(channel_username):

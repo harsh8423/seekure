@@ -9,6 +9,10 @@ from flask_cors import CORS
 from bson import ObjectId
 from telegram.fetchChannel import fetch_channel_metadata, save_channel_metadata_to_mongodb
 import asyncio
+from dotenv import load_dotenv
+import os
+
+load_dotenv()   
 
 auth_bp = Blueprint('auth', __name__)
 

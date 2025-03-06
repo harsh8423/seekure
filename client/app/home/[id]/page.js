@@ -1,11 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import Navigation from '@/components/Navigation';
 import PreferencesModal from '@/components/PreferencesModal';
-import JobCard from '@/components/JobCard';
-import TelegramMessageCard from '@/components/TelegramMessageCard';
 import JobAnalysisTools from '@/components/JobAnalysisTools';
+import MixedContentCard from '@/components/MixedContentCard';
 import { 
   Wand2, Settings, Search, Filter, X, Home, 
   ListFilter, Sparkles, ArrowUp
@@ -52,6 +51,9 @@ export default function HomePage() {
     { value: 'month', label: 'Last month' },
     { value: 'all', label: 'All time' }
   ];
+
+  // Add a new state for mixed content
+  const [mixedContent, setMixedContent] = useState([]);
 
   // Scroll position tracking
   useEffect(() => {
@@ -227,6 +229,26 @@ export default function HomePage() {
       fetchJobs();
     }
   }, [activeFilters, preferences]);
+
+  // Use useMemo to create mixed content only when jobs or telegramMessages change
+  useEffect(() => {
+    if (!loading && preferences) {
+      // Only include telegram messages if user preferences allow
+      const telegramToInclude = preferences?.includeTelegram ? telegramMessages : [];
+      
+      // Create a combined array with type information
+      const jobItems = jobs.map(job => ({ item: job, type: 'job' }));
+      const telegramItems = telegramToInclude.map(msg => ({ item: msg, type: 'telegram' }));
+      
+      // Combine both arrays
+      const combined = [...jobItems, ...telegramItems];
+      
+      // Shuffle the combined array
+      const shuffled = [...combined].sort(() => Math.random() - 0.5);
+      
+      setMixedContent(shuffled);
+    }
+  }, [jobs, telegramMessages, preferences, loading]);
 
   const handleSavePreferences = async (newPreferences) => {
     try {
@@ -447,7 +469,7 @@ export default function HomePage() {
                 </select>
               </div>
 
-              <div>
+              {/* <div>
                 <h4 className="text-sm font-semibold mb-2 text-gray-600">Work Mode</h4>
                 {WORK_MODES.map(mode => (
                   <label key={mode} className="flex items-center gap-2 mb-1.5">
@@ -460,7 +482,7 @@ export default function HomePage() {
                     <span className="text-gray-700">{mode}</span>
                   </label>
                 ))}
-              </div>
+              </div> */}
 
               <div>
                 <h4 className="text-sm font-semibold mb-2 text-gray-600">Experience</h4>
@@ -621,7 +643,7 @@ export default function HomePage() {
                 </select>
               </div>
 
-              <div>
+              {/* <div>
                 <h4 className="text-sm font-semibold mb-2 text-gray-600">Work Mode</h4>
                 {WORK_MODES.map(mode => (
                   <label key={mode} className="flex items-center gap-2 mb-1.5">
@@ -634,7 +656,7 @@ export default function HomePage() {
                     <span className="text-gray-700">{mode}</span>
                   </label>
                 ))}
-              </div>
+              </div> */}
 
               <div>
                 <h4 className="text-sm font-semibold mb-2 text-gray-600">Experience</h4>
@@ -688,37 +710,29 @@ export default function HomePage() {
               ⚠️ {error}
             </div>
           ) : (
-            <div className="space-y-8">
-              {/* Jobs Section */}
-              <section>
-                <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center gap-2">
-                  🔥 Matching Jobs
+            <div className="space-y-6">
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl md:text-2xl font-bold flex items-center gap-2">
+                  🔥 Recommended For You
                   <span className="text-sm bg-purple-100 text-purple-700 px-3 py-1 rounded-full">
-                    {jobs.length} results
+                    {mixedContent.length} results
                   </span>
                 </h2>
-                <div className="grid grid-cols-1 gap-4">
-                  {jobs.map((job) => (
-                    <JobCard key={job.id} job={job} />
-                  ))}
-                </div>
-              </section>
-
-              {/* Telegram Messages Section */}
-              {preferences?.includeTelegram && telegramMessages.length > 0 && (
-                <section>
-                  <h2 className="text-xl md:text-2xl font-bold mb-4 md:mb-6 flex items-center gap-2">
-                    📢 Telegram Updates
-                    <span className="text-sm bg-blue-100 text-blue-700 px-3 py-1 rounded-full">
-                      {telegramMessages.length} new posts
-                    </span>
-                  </h2>
-                  <div className="grid grid-cols-1 gap-4">
-                    {telegramMessages.map((message, index) => (
-                      <TelegramMessageCard key={index} message={message} />
-                    ))}
+              </div>
+              
+              {/* Mixed content feed */}
+              <div className="grid grid-cols-1 gap-4">
+                {mixedContent.map((content, index) => (
+                  <div key={`${content.type}-${index}`} className="w-full">
+                    <MixedContentCard item={content.item} type={content.type} />
                   </div>
-                </section>
+                ))}
+              </div>
+              
+              {mixedContent.length === 0 && (
+                <div className="text-center py-8">
+                  <p className="text-gray-600">No matching content found. Try adjusting your filters.</p>
+                </div>
               )}
             </div>
           )}
@@ -730,8 +744,8 @@ export default function HomePage() {
             setIsModalOpen(false);
             setActiveTab('home');
           }}
-          preferences={preferences}
           onSave={handleSavePreferences}
+          initialPreferences={preferences}
         />
       </main>
     </div>

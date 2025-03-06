@@ -1,8 +1,16 @@
+import { useState } from 'react';
 import { Calendar, MapPin, ExternalLink, Send } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
+import TelegramMessageDetailModal from './TelegramMessageDetailModal';
+
 export default function TelegramMessageCard({ message }) {
-    return (
-      <div className="w-full bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden">
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
+
+  return (
+    <>
+      <div 
+        className="w-full bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 overflow-hidden cursor-pointer"
+        onClick={() => setIsDetailsOpen(true)}
+      >
         <div className="p-4">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
@@ -18,7 +26,7 @@ export default function TelegramMessageCard({ message }) {
           </div>
           
           <div className="prose prose-sm max-w-none text-sm line-clamp-3 mb-3">
-            <ReactMarkdown>{message.message}</ReactMarkdown>
+            <div dangerouslySetInnerHTML={{ __html: message.message.replace(/\n/g, '<br/>') }} />
           </div>
           
           {message.url && (
@@ -27,6 +35,7 @@ export default function TelegramMessageCard({ message }) {
               target="_blank" 
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1.5 text-blue-600 hover:text-blue-800 transition-colors text-xs font-medium"
+              onClick={(e) => e.stopPropagation()} // Prevent card click
             >
               View in Telegram
               <ExternalLink className="w-3 h-3" />
@@ -34,5 +43,12 @@ export default function TelegramMessageCard({ message }) {
           )}
         </div>
       </div>
-    );
-  }
+
+      <TelegramMessageDetailModal
+        isOpen={isDetailsOpen}
+        onClose={() => setIsDetailsOpen(false)}
+        message={message}
+      />
+    </>
+  );
+}

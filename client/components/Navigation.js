@@ -32,7 +32,7 @@ export default function Navigation() {
           </motion.div>
 
           <div className="flex items-center gap-4">
-            <motion.div whileHover={{ scale: 1.1 }} className="relative group">
+            {/* <motion.div whileHover={{ scale: 1.1 }} className="relative group">
               <Link 
                 href="/home" 
                 className="p-2 rounded-full flex items-center gap-1 text-gray-600 hover:text-purple-600 transition-colors"
@@ -41,7 +41,7 @@ export default function Navigation() {
                 <span className="text-sm font-medium hidden md:inline-block">Home</span>
               </Link>
               <div className="absolute bottom-0 left-1/2 h-[2px] w-0 bg-purple-600 group-hover:w-full transition-all duration-300 -translate-x-1/2"></div>
-            </motion.div>
+            </motion.div> */}
 
             <motion.div whileHover={{ scale: 1.1 }} className="relative group">
               <Link 

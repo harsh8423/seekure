@@ -1,10 +1,15 @@
 from telethon import TelegramClient, sync
 from datetime import datetime, timedelta
 import csv
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 
 # Replace 'your_api_id' and 'your_api_hash' with your actual API ID and hash
-api_id = '21837749'
-api_hash = 'c0a5dd3e08e7ee5b2c10f969930cb602'
+api_id = os.getenv("TELEGRAM_API_ID")
+api_hash = os.getenv("TELEGRAM_API_HASH")
 
 async def fetch_messages(channel_username, start_date, messages_list):
     # Create a new Telegram client within the function

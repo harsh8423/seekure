@@ -1,12 +1,21 @@
 // components/JobDetailsModal.js
 import { X, ExternalLink, MapPin, Calendar, Briefcase, Building2 } from 'lucide-react';
-import ReactMarkdown from 'react-markdown';
 
 export default function JobDetailsModal({ isOpen, onClose, job }) {
   if (!isOpen) return null;
 
+  // Add event handler for background click
+  const handleBackdropClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+    <div 
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4"
+      onClick={handleBackdropClick}
+    >
       <div className="bg-white rounded-2xl w-full max-w-3xl max-h-[90vh] overflow-y-auto">
         <div className="p-6">
           <div className="flex justify-between items-start mb-6">
@@ -20,6 +29,7 @@ export default function JobDetailsModal({ isOpen, onClose, job }) {
             <button 
               onClick={onClose}
               className="p-2 hover:bg-gray-100 rounded-full"
+              aria-label="Close modal"
             >
               <X className="w-6 h-6 text-gray-500" />
             </button>
@@ -41,7 +51,8 @@ export default function JobDetailsModal({ isOpen, onClose, job }) {
           </div>
 
           <div className="prose max-w-none mb-6">
-            <ReactMarkdown>{job.description}</ReactMarkdown>
+            {/* Replace ReactMarkdown with dangerouslySetInnerHTML */}
+            <div dangerouslySetInnerHTML={{ __html: job.description }} />
           </div>
 
           <a
@@ -51,7 +62,7 @@ export default function JobDetailsModal({ isOpen, onClose, job }) {
             className="w-full py-3 bg-blue-600 text-white rounded-lg flex items-center justify-center gap-2 hover:bg-blue-700 transition-colors"
           >
             <ExternalLink className="w-5 h-5" />
-            Apply on {job.source?.charAt(0).toUpperCase() + job.source?.slice(1)}
+            Apply on {job.site?.charAt(0).toUpperCase() + job.site?.slice(1) || 'Website'}
           </a>
         </div>
       </div>
