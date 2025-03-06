@@ -9,4 +9,4 @@ werkzeug
 google-generativeai
 telethon
 pymongo
-python-genai
+google-genai
