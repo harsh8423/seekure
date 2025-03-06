@@ -15,8 +15,6 @@ load_dotenv()
 # Initialize Gemini properly
 genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
-# client = genai.Client(api_key="AIzaSyCfmHOUBbhWalFlhThJuU2WA9j4Kn9tW48")
-# MongoDB connection setup (use the same connection from User model)
 from models.user import client, db
 jobs_collection = db["jobs"]  # Define jobs_collection
 
