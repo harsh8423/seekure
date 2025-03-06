@@ -15,7 +15,7 @@ export default function GoogleSignInButton() {
 
     script.onload = () => {
       window.google.accounts.id.initialize({
-        client_id: '904389234161-6a296iocvp1702cflt0coo00deb7qdpe.apps.googleusercontent.com',
+        client_id: '887578643410-o4dmit48hhn8d143bvsq3fg449l5s2m4.apps.googleusercontent.com',
         callback: handleCredentialResponse,
       });
 
