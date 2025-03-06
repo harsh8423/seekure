@@ -3,12 +3,18 @@ from flask_jwt_extended import jwt_required, get_jwt_identity
 from utils.atlasSearch import search_similar_jobs
 from bson import ObjectId
 import json
-from datetime import datetime
+from datetime import datetime, timedelta
 from groq import Groq
 from dotenv import load_dotenv
 import os
 from models.user import User
+from google import generativeai as genai
+from google.genai import types
 
+# Initialize Gemini properly
+genai.configure(api_key=os.getenv("GEMINI_API_KEY", "AIzaSyCfmHOUBbhWalFlhThJuU2WA9j4Kn9tW48"))
+
+# client = genai.Client(api_key="AIzaSyCfmHOUBbhWalFlhThJuU2WA9j4Kn9tW48")
 # MongoDB connection setup (use the same connection from User model)
 from models.user import client, db
 jobs_collection = db["jobs_with_embeddings"]  # Define jobs_collection
@@ -126,12 +132,14 @@ def serialize_telegram_message(message):
             'score': 0.0
         }
 
-@jobs_bp.route('/search', methods=['GET'])
+@jobs_bp.route('/search', methods=['POST'])
 @jwt_required()
 def search_jobs():
     try:
         current_user_id = get_jwt_identity()
-        results = search_similar_jobs(current_user_id)
+        filters = request.get_json()
+        
+        results = search_similar_jobs(current_user_id, filters)
         
         if not isinstance(results, dict):
             print(f"Unexpected results format: {type(results)}")
@@ -475,3 +483,111 @@ def create_cover_letter_custom():
     except Exception as e:
         print(f"Error in cover letter generation: {e}")
         return jsonify({'error': 'Failed to generate cover letter'}), 500
+
+
+@jobs_bp.route('/ai-search', methods=['POST'])
+@jwt_required()
+def ai_search():
+    try:
+        current_user_id = get_jwt_identity()
+        data = request.get_json()
+        user_query = data.get('query')
+
+        if not user_query:
+            return jsonify({'error': 'Query is required'}), 400
+
+        # Update the prompt to avoid f-string formatting issues
+        prompt = """
+        Convert this job search query into filters. Return ONLY a valid JSON object with no additional text.
+        Query: "{0}"
+        
+        Available filters:
+        - jobType: ["fulltime", "part-time", "internship"]
+        - workMode: ["remote", "hybrid", "on-site"]
+        - experience: ["entry", "mid-senior"]
+        - location: string (city name)
+        - datePosted: ["today", "week", "month", "all"]
+        - original_query: extract the job title from the query
+        
+        Example format:
+        {{
+            "workMode": ["remote"],
+            "location": "New York"
+        }}
+        
+        If no specific filters are mentioned, return an empty object: {{}}
+        """.format(user_query)
+        
+        # Generate response from Gemini - fix the API call
+        model = genai.GenerativeModel('gemini-1.5-flash')
+        response = model.generate_content(prompt)
+        response_text = response.text.strip()
+        
+        print("Raw Gemini response:", response_text)  # Debug log
+        
+        try:
+            # Remove any markdown formatting and get just the JSON object
+            if "```json" in response_text:
+                json_str = response_text.split("```json")[1].split("```")[0].strip()
+            elif "```" in response_text:
+                json_str = response_text.split("```")[1].split("```")[0].strip()
+            else:
+                # Find the first { and last }
+                start = response_text.find('{')
+                end = response_text.rfind('}')
+                if start != -1 and end != -1:
+                    json_str = response_text[start:end+1]
+                else:
+                    json_str = "{}"
+            
+            # Clean the JSON string
+            json_str = json_str.strip()
+            
+            # Parse the JSON
+            filters = json.loads(json_str)
+            
+            # Add original query
+            
+            print("Parsed filters:", filters)  # Debug log
+            
+            # Use existing search function
+            results = search_similar_jobs(current_user_id, filters)
+            
+            # Process results
+            processed_jobs = [serialize_job(job) for job in results.get('jobs', [])]
+            
+            return jsonify({
+                'jobs': processed_jobs,
+                'appliedFilters': filters
+            }), 200
+            
+        except json.JSONDecodeError as e:
+            print(f"JSON parsing error: {e}")
+            print(f"Attempted to parse: {json_str}")
+            # Fallback to basic search
+            fallback_filters = {'original_query': user_query}
+            results = search_similar_jobs(current_user_id, fallback_filters)
+            processed_jobs = [serialize_job(job) for job in results.get('jobs', [])]
+            
+            return jsonify({
+                'jobs': processed_jobs,
+                'appliedFilters': fallback_filters
+            }), 200
+            
+    except Exception as e:
+        print(f"Error in AI search: {e}")
+        # Fallback to basic search
+        fallback_filters = {'original_query': user_query}
+        try:
+            results = search_similar_jobs(current_user_id, fallback_filters)
+            processed_jobs = [serialize_job(job) for job in results.get('jobs', [])]
+            
+            return jsonify({
+                'jobs': processed_jobs,
+                'appliedFilters': fallback_filters
+            }), 200
+        except:
+            return jsonify({
+                'jobs': [],
+                'appliedFilters': fallback_filters
+            }), 200

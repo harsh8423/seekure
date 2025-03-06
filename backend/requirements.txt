@@ -6,3 +6,4 @@ PyPDF2
 groq
 python-dotenv
 werkzeug
+genai

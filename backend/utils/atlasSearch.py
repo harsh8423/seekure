@@ -7,11 +7,12 @@ import csv
 import pandas as pd
 from datetime import datetime
 from bson import ObjectId
+from datetime import timedelta
 
 # MongoDB connection setup
 client = MongoClient("mongodb+srv://harsh8423:8423047004@cluster0.1xbklyu.mongodb.net/seekure")
 db = client["seekure"]
-jobs_collection = db["jobs_with_embeddings"]
+jobs_collection = db["jobs"]
 users_collection = db["users"]
 telegram_messages_collection = db["telegram_jobs"]
 
@@ -39,63 +40,143 @@ def get_user_data(user_id):
         print(f"Error fetching user data: {e}")
         return None
 
-def search_similar_jobs(user_id, top_k=5):
+def search_similar_jobs(user_id, filters=None, top_k=10):
     """
-    Perform Atlas Search to find relevant job postings based on user preferences.
-
-    Args:
-        user_id (str): User's ID
-        top_k (int): Number of top results to retrieve.
-
-    Returns:
-        dict: Dictionary containing job results and telegram results
+    Perform Atlas Search with filters to find relevant job postings.
     """
     try:
-        # Get user data
         user_data = get_user_data(user_id)
         if not user_data:
             return {"jobs": [], "telegram_messages": []}
 
-        # Extract search parameters
         skills = user_data["skills"]
         job_titles = user_data["job_titles"]
         preferences = user_data["preferences"]
 
-        # Prepare search queries
-        skills_query = " ".join(skills) if skills else ""
-        job_titles_query = " ".join(job_titles) if job_titles else ""
+        # Build search compound query
+        must_clauses = []
+        should_clauses = []
 
-        # Build job search pipeline
-        job_pipeline = [
-            {
-                "$search": {
+        # Handle original query if it exists (from AI search)
+        if filters and filters.get('original_query'):
+            should_clauses.append({
+                "text": {
+                    "query": filters['original_query'],
+                    "path": ["title", "description"],
+                    "fuzzy": {"maxEdits": 1}
+                }
+            })
+        else:
+            # Use default user preferences for regular search
+            should_clauses.extend([
+                {
+                    "text": {
+                        "query": " ".join(skills) if skills else "",
+                        "path": ["description", "title"],
+                        "fuzzy": {"maxEdits": 1}
+                    }
+                },
+                {
+                    "text": {
+                        "query": " ".join(job_titles) if job_titles else "",
+                        "path": "title",
+                        "score": {"boost": {"value": 2}}
+                    }
+                }
+            ])
+
+        # Add filter clauses (works for both AI and regular search)
+        if filters:
+            # Job Type filter
+            if filters.get('jobType') and len(filters['jobType']) > 0:
+                must_clauses.append({
                     "compound": {
                         "should": [
                             {
                                 "text": {
-                                    "query": skills_query,
-                                    "path": ["description", "title"],
-                                    "fuzzy": {
-                                        "maxEdits": 1,
-                                        "prefixLength": 0
-                                    }
+                                    "query": job_type,
+                                    "path": "job_type",
+                                    "fuzzy": {"maxEdits": 1}
                                 }
-                            },
-                            {
-                                "text": {
-                                    "query": job_titles_query,
-                                    "path": "title",
-                                    "score": { "boost": { "value": 2 } }
-                                }
-                            }
+                            } for job_type in filters['jobType']
                         ],
                         "minimumShouldMatch": 1
                     }
+                })
+
+            # Work Mode filter
+            if filters.get('workMode') and len(filters['workMode']) > 0:
+                must_clauses.append({
+                    "compound": {
+                        "should": [
+                            {
+                                "text": {
+                                    "query": mode,
+                                    "path": "work_mode",
+                                    "fuzzy": {"maxEdits": 1}
+                                }
+                            } for mode in filters['workMode']
+                        ],
+                        "minimumShouldMatch": 1
+                    }
+                })
+
+            # Experience filter
+            if filters.get('experience') and len(filters['experience']) > 0:
+                must_clauses.append({
+                    "compound": {
+                        "should": [
+                            {
+                                "text": {
+                                    "query": exp_level,
+                                    "path": "job_level",
+                                    "fuzzy": {"maxEdits": 1}
+                                }
+                            } for exp_level in filters['experience']
+                        ],
+                        "minimumShouldMatch": 1
+                    }
+                })
+
+            # Location filter
+            if filters.get('location'):
+                must_clauses.append({
+                    "text": {
+                        "query": filters['location'],
+                        "path": "location",
+                        "fuzzy": {"maxEdits": 2}
+                    }
+                })
+
+            # Date Posted filter
+            if filters.get('datePosted'):
+                date_range = {
+                    'today': 1,
+                    'week': 7,
+                    'month': 30,
+                }.get(filters['datePosted'])
+                
+                if date_range:
+                    must_clauses.append({
+                        "range": {
+                            "path": "date_posted",
+                            "gte": datetime.now() - timedelta(days=date_range),
+                            "lte": datetime.now()
+                        }
+                    })
+
+        # Build the final pipeline
+        job_pipeline = [
+            {
+                "$search": {
+                    "compound": {
+                        "must": must_clauses,
+                        "should": should_clauses,
+                        "minimumShouldMatch": 1 if should_clauses else 0
+                    }
                 }
             },
-            {
-                "$limit": top_k
-            },
+            {"$limit": top_k},
             {
                 "$project": {
                     "title": 1,
@@ -103,20 +184,21 @@ def search_similar_jobs(user_id, top_k=5):
                     "location": 1,
                     "description": 1,
                     "site": 1,
-                    'company_url': 1,
-                    'company_logo': 1,
-                    'job_level': 1,
+                    "company_url": 1,
+                    "company_logo": 1,
+                    "job_level": 1,
                     "job_type": 1,
-                    'job_url': 1,
-                    'job_url_direct': 1,
-                    'date_posted': 1,
+                    "work_mode": 1,
+                    "job_url": 1,
+                    "job_url_direct": 1,
+                    "date_posted": 1,
                     "id": 1,
-                    "score": { "$meta": "searchScore" }
+                    "score": {"$meta": "searchScore"}
                 }
             }
         ]
 
-        # Execute job search
+        # Execute search
         job_results = list(jobs_collection.aggregate(job_pipeline))
 
         # Handle Telegram search if enabled in preferences
@@ -125,7 +207,6 @@ def search_similar_jobs(user_id, top_k=5):
             telegram_channels = preferences.get("telegramChannels", [])
             if telegram_channels:
                 channel_usernames = [channel["username"].replace("@", "") for channel in telegram_channels]
-                print(channel_usernames)
                 telegram_pipeline = [
                     {
                         "$search": {
@@ -141,13 +222,13 @@ def search_similar_jobs(user_id, top_k=5):
                                 "should": [
                                     {
                                         "text": {
-                                            "query": job_titles_query,
+                                            "query": " ".join(job_titles) if job_titles else "",
                                             "path": "message"
                                         }
                                     },
                                     {
                                         "text": {
-                                            "query": skills_query,
+                                            "query": " ".join(skills) if skills else "",
                                             "path": "message"
                                         }
                                     }

@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "tidal-airway-452410-a1",
+  "private_key_id": "096f0a0aff679b91e0a1fb2a39377be769f7c3e5",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCFUJl+v+Oyje9M\nfMr+LUJHR2440F1379zA0QjvOS6kmbJx0YsMVcJnBlHMH5dNXu4PFyxP0ioSBJjY\npTbIEOXz4Ss71BVNQUREkHOwsKhlmVWIOUs+liPskStcrX1a6OXxKF1Gn8x7ASRR\nj+m2Xm4CgK8TN1SoT67pprmCLrm9fZMjfxPnPTwVbpsMVcitDW6c6ecLJLz4NqFy\nEIP+lvHsPr3HJPGf4HvECAJJVUFnkaGyDe10UTn180i+F7sftre00WGmVtc2VEMK\nCgpL6eXGqJ1FgkxPyYjn+5rUFqT1CzgU49E7GsJKankgPlPyEuBrVGymsC2HhJb2\nX34Cnmt/AgMBAAECggEAD1nzUvUlyISE7ySE+4qapzqX0VMCcF0z6RV+bI2udqXR\ni+m6k/ZhfHDt2mOI42VFudchSHpwUxgpwZ4aFiUGqx6yq8uwPZqBEfl7A6L+wTRM\nSnN5MVZ4rIp1mSZ2g5FuE7xiK/pwFs9QL1QzGsek7gTYzuMAN0wgXXzQFShBmzWV\naW+jMoWTorolK58X3tOxhKk1mW16yZ5o7OtefnxHF/5VHxOzKjnrGRWgwioMuRPG\n2ycEqg2Dals2N3bJcm7Gp1LHIkfxqeIdM2Y+7NPzfc1qsW6YSQZRY/dAfz94c0kt\nTxI/nPl8L/Sp7Ldpv2ErIpktpQraRLOs2PTxe9fRgQKBgQC7j9ngr0OEJ/0kvrH6\nFc/PKKIxFLM/JzjmqwatWFGF8gSUPDz7rDyCxSpHb87pk1nlBNavjCGrv7McdADb\npuEiasa2FxECmbOW66MUvjbc+C3jAXpxeTAlPvUQ6iTW8aQ8KqvAligZu7U8KXsU\nh3vgirW5zFf0i+kWadNg7nqSrQKBgQC19YgvtTxEwy76W/f/JcY0bcPVtwRvdsM0\n4ApbHAuzS6MxaPS63JT06drc9b5I4zeO8MVE7S14ambew/MFJvYFbs9hkr3TpS7+\n+TJp9f3shhTDWcmmp/gzAZA/VfRB44FgxMip6KopO3TblTO9pew3p02jiQE5XBtb\n78+anA5oWwKBgQC1q1HH1Tq6KNmC28obh0DvUFY43+n2Q5FTq1geUqsz6AUTZ31R\n77P0nfCjnOJ3TygFMbiX9E0ww89CwgGKv4rVAUNTX+gz8pgGmFovX0ZYpXIcrHPi\nsRU3HlHUflYMc6U2OcZ+FXLl6fBTQ4JZkhkklnYKbqjKzzGHah05iAPlSQKBgHGK\nGkaasla97Exwotjk+z6v12k94FilJL2TpyKe53Yjlls4gK0xAwmn+texx+C3V22s\nM4wE60CeND6Ayt3GJ/HP6TubUzQDeMXFPX3870tthvs2xatmWGuLaDT9L4MFsS9u\n2z+aXMOJxCtYeIa4SCOaE8odrVPbc370rvhstFjNAoGBAIh5LRyMPWm3WLPJgXwx\ncxTIfFxBoHV+AGmA05fnnngBJEzbeR9LKFZxMDSncfLS+vRrwBBT3o2/wIdnQFGN\neowSL22UYZrxEQ30fW/X3cj2FBb8GGNa/qXDvyPeHU8YbVh1SPaO4TfFX31kDrNE\nj6KHIuwtgrbkEn8jAJgSCH/D\n-----END PRIVATE KEY-----\n",
+  "client_email": "service-credentials@tidal-airway-452410-a1.iam.gserviceaccount.com",
+  "client_id": "116869472308041787065",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/service-credentials%40tidal-airway-452410-a1.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

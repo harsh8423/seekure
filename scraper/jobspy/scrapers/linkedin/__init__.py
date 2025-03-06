@@ -82,12 +82,12 @@ class LinkedInScraper(Scraper):
             scraper_input.hours_old * 3600 if scraper_input.hours_old else None
         )
         continue_search = (
-            lambda: len(job_list) < scraper_input.results_wanted and start < 1000
+            lambda: len(job_list) < scraper_input.results_wanted*2 and start < 1000
         )
         while continue_search():
             request_count += 1
             logger.info(
-                f"search page: {request_count} / {math.ceil(scraper_input.results_wanted / 10)}"
+                f"search page: {request_count} / {math.ceil(scraper_input.results_wanted*2 / 10)}"
             )
             params = {
                 "keywords": scraper_input.search_term,
@@ -166,7 +166,7 @@ class LinkedInScraper(Scraper):
                 time.sleep(random.uniform(self.delay, self.delay + self.band_delay))
                 start += len(job_list)
 
-        job_list = job_list[: scraper_input.results_wanted]
+        job_list = job_list[: scraper_input.results_wanted*2]
         return JobResponse(jobs=job_list)
 
     def _process_job(

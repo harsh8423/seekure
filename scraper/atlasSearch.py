@@ -11,7 +11,7 @@ from bson import ObjectId
 # MongoDB connection setup
 client = MongoClient("mongodb+srv://harsh8423:8423047004@cluster0.1xbklyu.mongodb.net/seekure")
 db = client["seekure"]
-jobs_collection = db["jobs_with_embeddings"]
+jobs_collection = db["jobs"]
 users_collection = db["users"]
 telegram_messages_collection = db["telegram_jobs"]
 
